@@ -1,0 +1,12 @@
+
+Authentication
+Authorization
+
+
+App Features:  
+Creating events
+    Users can create new events with event_name, date, time, location, description
+    Add custom fields to collect extra information such as RSVP, dietary restrictions, special request
+
+Inviting guests:
+    Invite guests by adding their email address
