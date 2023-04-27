@@ -1,1 +1,1 @@
-# Travel-planning-app
+# Event-planning-app
