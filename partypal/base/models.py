@@ -63,5 +63,10 @@ class Organizer(models.Model):
     
 
 class Venue(models.Model):
-    event = models.ForeignKey
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='attendees')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='attendees')
+    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name='attendees')
+    purchase_date = models.BooleanField(default=False)
+    # checked_in_on = models.DateTimeField(auto_now_add=True)
+
 
