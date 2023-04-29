@@ -62,5 +62,6 @@ class Organizer(models.Model):
     email_address = models.ForeignKey(User, on_delete=models.CASCADE, related_name='organizers')
     
 
-class Venue
+class Venue(models.Model):
+    event = models.ForeignKey
 
