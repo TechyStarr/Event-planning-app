@@ -56,16 +56,15 @@ class Attendee(models.Model):
         return f'{self.user} - {self.event} - {self.checked_in}'
 
 
-
 class Organizer(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='organizers')
     email_address = models.ForeignKey(User, on_delete=models.CASCADE, related_name='organizers')
     
 
 class Venue(models.Model):
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='attendees')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='attendees')
-    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name='attendees')
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='venue')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='venue')
+    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name='venue')
     purchase_date = models.BooleanField(default=False)
     # checked_in_on = models.DateTimeField(auto_now_add=True)
 
