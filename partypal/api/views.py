@@ -17,3 +17,21 @@ def home(request):
         'GET/api/rooms/:id',
     ]
     return Response(routes) # safe=False allows for lists to be returned
+
+
+@api_view(['GET'])
+def apiOverview(request):
+    api_urls = {
+        'List':'/event-list/',  
+        'Detail View':'/event-detail/<str:pk>/',
+        'Create':'/event-create/',
+        'Update':'/event-update/<str:pk>/',
+        'Delete':'/event-delete/<str:pk>/',
+    }
+    return Response(api_urls) # safe=False allows for lists to be returned
+
+@api_view(['GET'])
+def eventList(request):
+    events = Event.objects.all().order_by('-id')
+    serializer = EventSerializer(events, many=True)
+    return Response(serializer.data)
