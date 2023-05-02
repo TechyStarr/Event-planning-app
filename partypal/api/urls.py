@@ -3,7 +3,15 @@ from . import views
 
 
 urlpatterns = [
+
+
     path('api', views.apiOverview, name='api-overview'),
+
+    path('user-list', views.userList, name='user-list'),
+    # path('event-detail/<str:pk>/', views.eventDetail, name='event-detail'),
+    path('user-create', views.createUser, name='user-create'),
+
+
     path('event-list', views.eventList, name='event-list'),
     path('event-detail/<str:pk>/', views.eventDetail, name='event-detail'),
     path('event-create', views.createEvent, name='event-create'),
