@@ -32,6 +32,13 @@ def apiOverview(request):
 
 @api_view(['GET'])
 def eventList(request):
-    events = Event.objects.all().order_by('-id')
+    events = Event.objects.all()
     serializer = EventSerializer(events, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def eventList(request, pk):
+    events = Event.objects.get(id=pk)
+    serializer = EventSerializer(events, many=False)
     return Response(serializer.data)
