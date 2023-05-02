@@ -38,7 +38,25 @@ def eventList(request):
 
 
 @api_view(['GET'])
-def eventList(request, pk):
+def eventDetail(request, pk):
     events = Event.objects.get(id=pk)
     serializer = EventSerializer(events, many=False)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def createEvent(request):
+    events = Event.objects.all()
+    serializer = EventSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        
+    return Response(serializer.data)
+
+@api_view(['PUT'])
+def updateEvent(request, pk):
+    events = Event.objects.get(id=pk)
+    serializer = EventSerializer(instance=events, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        
     return Response(serializer.data)
