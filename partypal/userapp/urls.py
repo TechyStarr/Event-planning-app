@@ -1,11 +1,20 @@
 from django.urls import path
 from . import views
 
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
+
 
 
 
 urlpatterns = [
 
+    # ------------ AUTHENTICATION WITH SIMPLE JWT -------------
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     # ------------ USER -------------
     path('user-list', views.userList, name='user-list'),
@@ -13,6 +22,4 @@ urlpatterns = [
     path('user-create', views.createUser, name='user-create'),
     path('user-update', views.updateUser, name='user-update'),
     path('user-delete/<str:pk>/', views.deleteUser, name='user-delete'),
-
-
 ]

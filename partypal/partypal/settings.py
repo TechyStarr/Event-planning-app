@@ -38,12 +38,21 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'api',
-    'userapp', #new
-
-    'rest_framework', #new
-
+    'api', #new
+    'userapp',
+    'rest_framework',
 ]
+
+
+REST_FRAMEWORK = {
+    "USER_DETAILS_SERIALIZER": "userapp.serializer.UserSerializer",
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+)
+}
+
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -105,9 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-REST_FRAMEWORK = {
-    "USER_DETAILS_SERIALIZER": "userapp.serializer.UserSerializer"
-}
+
 
 
 # Internationalization

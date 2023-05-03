@@ -4,49 +4,41 @@ from django.contrib.auth.models import PermissionsMixin
 
 # Create your models here.
 
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 class CustomUserManager(BaseUserManager):
-    def create_user(self, username, email, password, **extra_fields):
+    def create_user(self, email, password=None, **extra_fields):
         if not email:
-            raise ValueError('The email is not valid')
-        email = self.normalize_email(email) # normalize_email is a built-in method that comes with BaseUserManager and it converts the email to lowercase
-        user = self.model(username=username, email=email, **extra_fields)
+            raise ValueError('The Email field must be set')
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
         user.set_password(password)
-        user.save()
+        user.save(using=self._db)
         return user
-    
-    def create_superuser(self, username, email, password, **extra_fields):
-        # extra_fields.setdefault('is_organizer', True)
-        extra_fields.setdefault('super_user', True) # this is a boolean field that is set to True by default for superusers
-        return self.create_user(username, email, password, **extra_fields)
-    
 
-    def create_user(self, username, email, password, **extra_fields):
-        extra_fields.setdefault('is_organizer', False)
-        extra_fields.setdefault('is_guest', False)
-        extra_fields.setdefault('super_user', False)
-        return self.create_user(username, email, password, **extra_fields)
-    
+    def create_superuser(self, email, password=None, **extra_fields):
+
+        return self.create_user(email, password, **extra_fields)
 
 
-
-
-class User(AbstractUser, PermissionsMixin): # permissionsMixin is a built-in model that comes with django and it gives us the ability to give permissions to users and groups and it also gives us the ability to check if a user has a specific permission
-    username = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100, unique=True, blank=False, null=False)
-    phone = models.IntegerField(blank=False, null=False)
+class User(AbstractBaseUser):
+    email = models.EmailField(unique=True)
+    username = models.CharField(max_length=30)
+    name = models.CharField(max_length=255, null=True, blank=True)
     is_active = models.BooleanField(default=True)
-    is_organizer = models.BooleanField(default=False)
-    is_guest = models.BooleanField(default=False)
-    super_user = models.BooleanField(default=False)
-    location = models.CharField(max_length=100, blank=True, null=True)
+    is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
-    
+
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['phone']
-
+    # REQUIRED_FIELDS = ['name']
 
     def __str__(self):
-        return self.username
+        return self.email
+
+    def has_perm(self, perm, obj=None):
+        return True
+
+    def has_module_perms(self, app_label):
+        return True
