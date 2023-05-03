@@ -13,6 +13,7 @@ urlpatterns = [
     path('event-detail/<str:pk>/', views.eventDetail, name='event-detail'),
     path('event-create', views.createEvent, name='event-create'),
     path('event-update/<str:pk>/', views.updateEvent, name='event-update'),
+    path('event-delete/<str:pk>/', views.deleteEvent, name='event-delete'),
 ]
 
 # {

@@ -19,11 +19,11 @@ def apiOverview(request):
     List all code snippets, or create a new snippet.
     """
     api_urls = {
-        'List':'/event-list/',  
-        'Detail View':'/event-detail/<str:pk>/',
-        'Create':'/event-create/',
-        'Update':'/event-update/<str:pk>/',
-        'Delete':'/event-delete/<str:pk>/',
+        'List':'/user-list/',  
+        'Detail View':'/user-detail/<str:pk>/',
+        'Create':'/user-create/',
+        'Update':'/user-update/<str:pk>/',
+        'Delete':'/user-delete/<str:pk>/',
     }
     return Response(api_urls) # safe=False allows for lists to be returned
 
@@ -42,23 +42,19 @@ def userList(request):
 def userDetail(request, pk):
     users = User.objects.get(id=pk)
     serializer  = UserSerializer(users, many=False)
+    return Response(serializer.data)
 
 
 @api_view(['POST'])
 def createUser(request):
     users = User.objects.all()
-    # serializers = UserSerializer(data=request.data)
-    # if serializers.is_valid():
-    #     serializers.save()
-
-
     if request.method == 'POST':
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        # return Response(serializer.errors)
-    # return Response(serializers.data)
+        return Response(serializer.errors)
+    return Response(serializer.data)
 
 @api_view(['PUT'])
 def updateUser(request, pk):
@@ -67,5 +63,12 @@ def updateUser(request, pk):
     if serializers.is_valid():
         serializers.save()
     return Response(serializers.data)
+
+
+@api_view(['DELETE'])
+def deleteUser(request, pk):
+    user = User.objects.get(id=pk)
+    user.delete()
+    return Response('User successfully deleted')
 
 

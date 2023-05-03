@@ -5,8 +5,7 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import User, Event, Guest, Host, Venue
-from .serializers import UserSerializer, EventSerializer, GuestSerializer, HostSerializer, VenueSerializer
-
+from .serializers import EventSerializer
 
 
 @api_view(['GET'])
@@ -45,10 +44,12 @@ def eventDetail(request, pk):
 @api_view(['POST'])
 def createEvent(request):
     events = Event.objects.all()
-    serializer = EventSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        
+    if request.method == 'POST':
+        serializer = EventSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)
     return Response(serializer.data)
 
 @api_view(['PUT'])
@@ -59,3 +60,10 @@ def updateEvent(request, pk):
         serializer.save()
         
     return Response(serializer.data)
+
+
+@api_view(['DELETE'])
+def deleteEvent(request, pk):
+    event = Event.objects.get(id=pk)
+    event.delete()
+    return Response('Item successfully deleted')
