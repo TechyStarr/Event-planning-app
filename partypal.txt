@@ -1,3 +1,8 @@
+FETCHING API WITH REACT
+create a new directory that will run on a diff port using the terminal
+    cd into desktop
+    run "npx create-react-app frontend" this will create a boilerplate
+
 
 Authentication
 Authorization
