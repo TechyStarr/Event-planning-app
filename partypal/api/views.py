@@ -1,4 +1,8 @@
 from django.shortcuts import render
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+
 
 # Create your views here.
 
@@ -29,19 +33,25 @@ def apiOverview(request):
 
 # ------------- EVENT -----------------
 @api_view(['GET'])
-def eventList(request):
+@authentication_classes([JWTAuthentication]) 
+@permission_classes([IsAuthenticated])
+def listEvent(request):
     events = Event.objects.all()
     serializer = EventSerializer(events, many=True)
     return Response(serializer.data)
 
 
 @api_view(['GET'])
-def eventDetail(request, pk):
+@authentication_classes([JWTAuthentication]) 
+@permission_classes([IsAuthenticated])
+def viewEvent(request, pk):
     events = Event.objects.get(id=pk)
     serializer = EventSerializer(events, many=False)
     return Response(serializer.data)
 
 @api_view(['POST'])
+@authentication_classes([JWTAuthentication]) 
+@permission_classes([IsAuthenticated])
 def createEvent(request):
     events = Event.objects.all()
     if request.method == 'POST':
@@ -53,6 +63,8 @@ def createEvent(request):
     return Response(serializer.data)
 
 @api_view(['PUT'])
+@authentication_classes([JWTAuthentication]) 
+@permission_classes([IsAuthenticated])
 def updateEvent(request, pk):
     events = Event.objects.get(id=pk)
     serializer = EventSerializer(instance=events, data=request.data)
@@ -63,6 +75,8 @@ def updateEvent(request, pk):
 
 
 @api_view(['DELETE'])
+@authentication_classes([JWTAuthentication]) 
+@permission_classes([IsAuthenticated])
 def deleteEvent(request, pk):
     event = Event.objects.get(id=pk)
     event.delete()

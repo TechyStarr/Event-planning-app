@@ -9,11 +9,11 @@ urlpatterns = [
 
     
     # ------------ EVENT -------------
-    path('event-list', views.eventList, name='event-list'),
-    path('event-detail/<str:pk>/', views.eventDetail, name='event-detail'),
-    path('event-create', views.createEvent, name='event-create'),
-    path('event-update/<str:pk>/', views.updateEvent, name='event-update'),
-    path('event-delete/<str:pk>/', views.deleteEvent, name='event-delete'),
+    path('list-event/', views.listEvent, name='list-event'),
+    path('view-event/<str:pk>/', views.viewEvent, name='view-event'),
+    path('create-event/', views.createEvent, name='create-event'),
+    path('update-event/<str:pk>/', views.updateEvent, name='update-event'),
+    path('delete-event/<str:pk>/', views.deleteEvent, name='delete-event'),
 ]
 
 # {
