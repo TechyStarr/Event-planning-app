@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate
 from rest_framework.serializers import ModelSerializer # ModelSerializer is a class that will automatically create a serializer with fields that correspond to the Model fields.
 from .models import User
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -41,11 +42,11 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data) # **validated_data passes in the validated data as keyword arguments
         return user
 
-class TokenPairSerializer(TokenObtainPairSerializer):
-    def validate(self, attrs):
-        data = super().validate(attrs) # super() calls the parent class's validate() method and returns the data dictionary that was returned by that method. 
-        refresh = self.get_token(self.user)
-        data['refresh_token'] = str(refresh)
-        data['access_token'] = str(refresh.access_token) # refresh.access_token is the access token that was generated for the user.
-        return data
+# class TokenPairSerializer(TokenObtainPairSerializer):
+#     def validate(self, attrs):
+#         data = super().validate(attrs) # super() calls the parent class's validate() method and returns the data dictionary that was returned by that method. 
+#         refresh = self.get_token(self.user)
+#         data['refresh_token'] = str(refresh)
+#         data['access_token'] = str(refresh.access_token) # refresh.access_token is the access token that was generated for the user.
+#         return data
 

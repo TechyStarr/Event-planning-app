@@ -13,20 +13,20 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 
 # Create your views here.
 
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
+# class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+#     @classmethod
+#     def get_token(cls, user):
+#         token = super().get_token(user)
 
-        # Add custom claims
-        token['email'] = user.email
-        # ...
+#         # Add custom claims
+#         token['email'] = user.email
+#         # ...
 
-        return token
+#         return token
 
 
-class MyTokenObtainPairView(TokenObtainPairView):
-    serializer_class = MyTokenObtainPairSerializer
+# class MyTokenObtainPairView(TokenObtainPairView):
+#     serializer_class = MyTokenObtainPairSerializer
 
 
 @api_view(['GET'])
@@ -49,11 +49,6 @@ def apiOverview(request):
 # ------------- USER -----------------
 
 
-
-
-
-
-
 @api_view(['GET'])
 @authentication_classes([JWTAuthentication]) # 
 @permission_classes([IsAuthenticated])
@@ -67,14 +62,14 @@ def userList(request):
 @api_view(['GET'])
 @authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
-def userDetail(request, pk):
+def viewUser(request, pk):
     users = User.objects.get(id=pk)
     serializer  = UserSerializer(users, many=False)
     return Response(serializer.data)
 
 
 @api_view(['POST'])
-def createUser(request):
+def register(request):
     users = User.objects.all()
     if request.method == 'POST':
         serializer = UserSerializer(data=request.data)
@@ -83,6 +78,8 @@ def createUser(request):
             return Response(serializer.data)
         return Response(serializer.errors)
     return Response(serializer.data)
+
+
 
 
 @api_view(['PUT'])

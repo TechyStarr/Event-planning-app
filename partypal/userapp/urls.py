@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import MyTokenObtainPairView
+from .serializer import MyTokenObtainPairView
 
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
@@ -18,13 +18,12 @@ urlpatterns = [
 
     # ------------ USER -------------
     path('user-list/', views.userList, name='user-list'),
-    path('user-detail/<str:pk>/', views.userDetail, name='user-detail'),
-    path('user-create/', views.createUser, name='user-create'),
-    path('user-update/', views.updateUser, name='user-update'),
-    path('user-delete/<str:pk>/', views.deleteUser, name='user-delete'),
+    path('view-user/<str:pk>/', views.viewUser, name='view-user'),
+    path('register/', views.register, name='register'),
+    path('update-user/<str:pk>/', views.updateUser, name='update-user'),
+    path('delete-user/<str:pk>/', views.deleteUser, name='delete-user'),
 
 
 
-    # path('register/', views.register, name='register'),
     # path('login/', views.login, name='login'),
 ]
