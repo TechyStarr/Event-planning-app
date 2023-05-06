@@ -22,4 +22,9 @@ urlpatterns = [
     path('user-create/', views.createUser, name='user-create'),
     path('user-update/', views.updateUser, name='user-update'),
     path('user-delete/<str:pk>/', views.deleteUser, name='user-delete'),
+
+
+
+    # path('register/', views.register, name='register'),
+    # path('login/', views.login, name='login'),
 ]

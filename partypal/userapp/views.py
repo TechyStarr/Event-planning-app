@@ -74,8 +74,6 @@ def userDetail(request, pk):
 
 
 @api_view(['POST'])
-@authentication_classes([JWTAuthentication]) 
-@permission_classes([IsAuthenticated])
 def createUser(request):
     users = User.objects.all()
     if request.method == 'POST':
