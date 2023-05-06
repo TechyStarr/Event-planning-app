@@ -5,6 +5,10 @@ from .models import User
 from .serializer import UserSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 
 
 # Create your views here.
@@ -51,13 +55,18 @@ def apiOverview(request):
 
 
 @api_view(['GET'])
+@authentication_classes([JWTAuthentication]) # 
+@permission_classes([IsAuthenticated])
 def userList(request):
     users = User.objects.all()
     serializers = UserSerializer(users, many=True)
     return Response(serializers.data)
 
 
+
 @api_view(['GET'])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated])
 def userDetail(request, pk):
     users = User.objects.get(id=pk)
     serializer  = UserSerializer(users, many=False)
@@ -65,6 +74,8 @@ def userDetail(request, pk):
 
 
 @api_view(['POST'])
+@authentication_classes([JWTAuthentication]) 
+@permission_classes([IsAuthenticated])
 def createUser(request):
     users = User.objects.all()
     if request.method == 'POST':
@@ -75,7 +86,10 @@ def createUser(request):
         return Response(serializer.errors)
     return Response(serializer.data)
 
+
 @api_view(['PUT'])
+@authentication_classes([JWTAuthentication]) 
+@permission_classes([IsAuthenticated])
 def updateUser(request, pk):
     users = User.objects.get(id=pk)
     serializers = UserSerializer(instance=users, data=request.data)
@@ -85,6 +99,8 @@ def updateUser(request, pk):
 
 
 @api_view(['DELETE'])
+@authentication_classes([JWTAuthentication]) 
+@permission_classes([IsAuthenticated])
 def deleteUser(request, pk):
     user = User.objects.get(id=pk)
     user.delete()
