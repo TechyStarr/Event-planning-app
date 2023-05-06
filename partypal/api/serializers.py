@@ -6,7 +6,14 @@ from .models import User, Event, Guest, Host, Venue
 class EventSerializer(ModelSerializer):
     class Meta:
         model = Event
-        fields = ('id', 'name', 'description', 'created_at')
+        fields = ('id', 'name', 'date', 'location', 'description', 'created_at')
+
+
+
+class SearchEventSerializer(ModelSerializer):
+    class Meta:
+        model = Event
+        fields = ('id', 'name', 'date', 'location', 'description', 'created_at')
 
 # class GuestSerializer(ModelSerializer):
 #     class Meta:
