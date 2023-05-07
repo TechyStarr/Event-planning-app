@@ -92,7 +92,10 @@ def searchEvent(request):
         queryset = Event.objects.filter(
             Q(name__icontains=query) |
             Q(location__icontains=query) |
-            Q(description__icontains=query)
+            Q(description__icontains=query) |
+            Q(date__icontains=query) 
+            # Q(upcoming_events__icontains=query) |
+            # Q(past_events__icontains=query) 
             )# filter the queryset based on the query 
         
         serializer = EventSerializer(queryset, many=True) # serialize the queryset 
@@ -101,12 +104,92 @@ def searchEvent(request):
         return Response({'events': 'No event found'})
     
 
-    serializer = EventSerializer(data=request.data) 
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['name', 'location', 'description']
+# @api_view(['GET'])
+# def recentEvent(request):
+#     queryset = Event.objects.all().order_by('-date')[:3]
+#     serializer = EventSerializer(queryset, many=True)
+#     return Response(serializer.data)
+
+# @api_view(['GET'])
+# def upcomingEvent(request):
+#     queryset = Event.objects.all().order_by('date')[:3]
+#     serializer = EventSerializer(queryset, many=True)
+#     return Response(serializer.data)
+
+# @api_view(['GET'])
+# def pastEvent(request):
+#     queryset = Event.objects.all().order_by('-date')[:3]
+#     serializer = EventSerializer(queryset, many=True)
+#     return Response(serializer.data)
+
+
+@api_view(['GET'])
+def registerForEvent(request, pk):
+    event = Event.objects.get(id=pk)
+    serializer = EventSerializer(event, many=False)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def unregisterForEvent(request, pk):
+    pass
+
+
+@api_view(['GET'])
+def inviteUser(request, pk):
+    pass
+
+@api_view(['GET'])
+def uninviteUser(request, pk):
+    pass
+
+@api_view(['GET'])
+def acceptInvite(request, pk):
+    pass
+
+@api_view(['GET'])
+def declineInvite(request, pk):
+    pass
+
+@api_view(['GET'])
+def cancelInvite(request, pk):
+    pass
+
+@api_view(['GET'])
+def viewHost(request, pk):
+    pass
 
 
 
-    def get_queryset(self):
-        queryset = Event.objects.all() 
-        return queryset
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# @api_view(['GET'])
+# def eventByHost(request, pk):
+#     queryset = Event.objects.filter(host=pk)
+#     serializer = EventSerializer(queryset, many=True)
+#     return Response(serializer.data)
+
+# @api_view(['GET'])
+# def eventByGuest(request, pk):
+#     queryset = Event.objects.filter(guest=pk)
+#     serializer = EventSerializer(queryset, many=True)
+#     return Response(serializer.data)

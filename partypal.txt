@@ -4,14 +4,47 @@ create a new directory that will run on a diff port using the terminal
     run "npx create-react-app frontend" this will create a boilerplate
 
 
-Authentication
-Authorization
 
 
-App Features:  
-Creating events
-    Users can create new events with event_name, date, time, location, description
-    Add custom fields to collect extra information such as RSVP, dietary restrictions, special request
+1.Browse events: Users can browse through a list of upcoming events, view event details,
+    and filter events based on their preferences such as location, date, category, etc.
 
-Inviting guests:
-    Invite guests by adding their email address
+2. Register for an event: Users can register for an event by providing their contact information, 
+    payment details (if required), and any other relevant information.
+
+3. Create an event: If the app allows users to create their own events, they can create an event by 
+    providing event details such as date, time, location, description, and any other relevant information.
+
+4. Manage their events: If a user has created an event, they can manage their event by updating event details,
+     adding or removing attendees, sending event reminders, and communicating with attendees.
+
+5. Share events: Users can share events with their friends or on social media platforms
+     to increase the event's visibility.
+
+6. Provide feedback: After attending an event, users can provide feedback or ratings to the event organizer
+     or share their experience with other users.
+
+6. Save events: Users can save events that they are interested in for future reference
+     or to receive updates on the event.
+
+7. Participate in event discussions: If the app provides a platform for event discussions, 
+    users can participate in discussions, ask questions, and provide suggestions to the event organizer or other attendees.
+
+8. Receive notifications: Users can receive notifications for upcoming events, event updates, 
+    and any other relevant information related to the events they have registered for or saved.
+
+
+
+
+
+- Event discovery: Users can browse through a list of upcoming events or search for events based on their preferences.
+    The app can provide filters for location, date, category, price, and other relevant criteria to help users find events 
+    that match their interests.
+
+- Registration process: Once a user has found an event they are interested in, they can register for it by providing
+    their contact information and any other relevant details required by the event organizer. This information might include 
+    their name, email address, phone number, and billing information if the event has a cost associated with it.
+
+
+Confirmation and communication: After a user registers for an event, the app should provide a confirmation message or email that includes all relevant details about the event, including date, time, location, and any instructions or requirements. The app should also provide an easy way for users to communicate with the event organizer or other attendees if they have any questions or concerns.
+
