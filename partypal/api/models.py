@@ -17,7 +17,7 @@ class Event(models.Model):
     start_date = models.DateTimeField(default=datetime(2023, 6, 10, 10, 30))
     end_date = models.DateTimeField(default=datetime(2023, 6, 10, 12, 0))
     location = models.CharField(max_length=100)
-    host = models.ForeignKey(User, related_name='events', default="", blank=True, on_delete=models.CASCADE)
+    host = models.ForeignKey(User, related_name='events_hosted', default="", null=True, blank=True, on_delete=models.CASCADE)
     guests = models.ManyToManyField(User, related_name='registered_guests', blank=True, default=[])
     capacity = models.IntegerField(default=0)
     image = models.ImageField(upload_to='event_images/', blank=True)
@@ -28,7 +28,7 @@ class Event(models.Model):
         return self.name
     
     def save(self, *args, **kwargs):
-        super(self, Event).save(*args, **kwargs)
+        super(Event, self).save(*args, **kwargs)
         
         img = Image.open(self.image.path)
         
@@ -47,13 +47,7 @@ class Host(models.Model):
 
     def __str__(self):
         return self.name
-    
-class Guest(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='guests', default="Amaino")
-    bio = models.TextField(max_length=100, default="")
 
-    def __str__(self):
-        return self.user.username
     
 
 class Venue(models.Model):
@@ -64,7 +58,7 @@ class Venue(models.Model):
     contact_email = models.EmailField(max_length=100, default="")
     contact_phone = models.CharField(max_length=100, default="")
     rating = models.DecimalField(max_digits=2, decimal_places=1, default=0.0) # max_digits is the total number of digits allowed, decimal_places is the number of digits allowed after the decimal point
-    event = models.ForeignKey(Event, related_name='venues', default="", blank=True, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, related_name='venues', default="", blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name

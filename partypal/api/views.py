@@ -6,13 +6,13 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework import filters
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import User, Event, Guest, Host, Venue
+from .models import User, Event, Venue
 from .serializers import EventSerializer
+from django.utils import timezone
+
+
 
 # Create your views here.
-
-
-
 
 @api_view(['GET'])
 def apiOverview(request):
@@ -125,7 +125,7 @@ def searchEvent(request):
 
 @api_view(['GET'])
 def registerForEvent(request, pk):
-    event = Event.objects.get(id=pk)
+    event = request.data.get('event_id')
     serializer = EventSerializer(event, many=False)
     return Response(serializer.data)
 
@@ -152,6 +152,7 @@ def declineInvite(request, pk):
 
 @api_view(['GET'])
 def cancelInvite(request, pk):
+
     pass
 
 @api_view(['GET'])
