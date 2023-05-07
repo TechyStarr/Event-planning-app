@@ -19,6 +19,7 @@ class SearchEventSerializer(ModelSerializer):
 
 class registerForEventSerializer(ModelSerializer):
     event_id = serializers.IntegerField()
+    
 
 
 

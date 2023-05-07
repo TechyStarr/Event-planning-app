@@ -126,8 +126,19 @@ def searchEvent(request):
 @api_view(['GET'])
 def registerForEvent(request, pk):
     event = request.data.get('event_id')
-    serializer = EventSerializer(event, many=False)
-    return Response(serializer.data)
+    try:
+        event = Event.objects.get(pk=event)
+    except Event.DoesNotExist:
+        return Response({'error': 'Event does not exist'})
+    
+    if event.guests.count() >= event.capacity:
+        return Response({"error": "Event is full"})
+    
+    if event.start_date < timezone.now():
+        return Response({"error": "Event has started, you can't register for this event"})
+    
+    event.guests.add(request.user)
+    return Response({"success": "You've successfully registered for this event"})
 
 @api_view(['GET'])
 def unregisterForEvent(request, pk):
