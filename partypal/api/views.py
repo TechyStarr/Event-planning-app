@@ -123,7 +123,7 @@ def searchEvent(request):
 #     return Response(serializer.data)
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def registerForEvent(request, pk):
     event = request.data.get('event_id')
     try:

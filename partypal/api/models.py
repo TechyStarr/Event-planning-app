@@ -21,7 +21,7 @@ class Event(models.Model):
     guests = models.ManyToManyField(User, related_name='registered_guests', blank=True, default=[])
     capacity = models.IntegerField(default=0)
     image = models.ImageField(upload_to='event_images/', blank=True)
-    venue = models.ForeignKey('Venue', related_name='events', default="", blank=True, on_delete=models.CASCADE)
+    venue = models.ForeignKey('Venue', related_name='events', default="", null=True, blank=True, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

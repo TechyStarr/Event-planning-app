@@ -8,18 +8,19 @@ from django.utils import timezone
 class EventSerializer(ModelSerializer):
     class Meta:
         model = Event
-        fields = ('id', 'name', 'date', 'location', 'description', 'created_at')
+        fields = ('id', 'name', 'description', 'start_date', 'end_date', 'location', 'capacity', 'image', 'venue', 'created_at') # fields to be serialized
+        
 
 
 class SearchEventSerializer(ModelSerializer):
     class Meta:
         model = Event
-        fields = ('id', 'name', 'date', 'location', 'description', 'created_at')
+        fields = ('id', 'name', 'start_date', 'location', 'description', 'created_at')
 
 
 class registerForEventSerializer(ModelSerializer):
     event_id = serializers.IntegerField()
-    
+
 
 
 
