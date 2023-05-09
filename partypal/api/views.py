@@ -4,7 +4,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework import filters
-from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import User, Event, Venue
 from .serializers import EventSerializer
@@ -29,18 +29,71 @@ def apiOverview(request):
     return Response(api_urls) # safe=False allows for lists to be returned
 
 
+# ------------- EVENT -----------------
+
+class EventList(APIView):
+
+    def get(self, request, format=None): # format=None allows for multiple data types to be returned
+        events = Event.objects.all()
+        serializer = EventSerializer(events, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request, format=None):
+        serializer = EventSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        
+
+
+class EventDetail(APIView):
+    def get_event(self, pk):
+        try:
+            return Event.objects.get(pk=pk)
+        except Event.DoesNotExist:
+            raise EventSerializer.NotFound({
+                "Event": "This event does not exist"
+            })
+        
+    def get(self, request, pk, format=None):
+        event = self.get_event(pk)
+        serializer = EventSerializer(event)
+        return Response(serializer.data)
+    
+    def put(self, request, pk, format=None):
+        event = self.get_event(pk)
+        serializer = EventSerializer(event, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)
+    
+    def delete(self, request, pk, format=None):
+        event = self.get_event(pk)
+        event.delete()
+        return Response({
+            "Event": "Event successfully deleted"
+        })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 # ------------- EVENT -----------------
-@api_view(['GET'])
-@authentication_classes([JWTAuthentication]) 
-@permission_classes([IsAuthenticated])
-def listEvent(request):
-    events = Event.objects.all()
-    serializer = EventSerializer(events, many=True)
-    return Response(serializer.data)
+
 
 
 @api_view(['GET'])
