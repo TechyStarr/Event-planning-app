@@ -62,6 +62,8 @@ def createEvent(request):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors)
+    
+
 
 @api_view(['PUT'])
 @authentication_classes([JWTAuthentication]) 
@@ -73,6 +75,7 @@ def updateEvent(request, pk):
         serializer.save()
         
     return Response(serializer.data)
+
 
 
 @api_view(['DELETE'])
@@ -125,16 +128,18 @@ def searchEvent(request):
 @api_view(['POST'])
 def registerForEvent(request, pk):
     event = request.data.get('event_id')
-    try:
-        event = Event.objects.get(pk=event)
-    except Event.DoesNotExist:
-        return Response({'error': 'Event does not exist'})
+    
     
     if event.guests.count() >= event.capacity:
         return Response({"error": "Event is full"})
     
     if event.start_date < timezone.now():
         return Response({"error": "Event has started, you can't register for this event"})
+
+    try:
+        event = Event.objects.get(pk=event)
+    except Event.DoesNotExist:
+        return Response({'error': 'Event does not exist'})
     
     event.guests.add(request.user)
     return Response({"success": "You've successfully registered for this event"})

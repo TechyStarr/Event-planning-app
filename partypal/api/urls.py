@@ -16,7 +16,7 @@ urlpatterns = [
     path('delete-event/<str:pk>/', views.deleteEvent, name='delete-event'),
 
     path('search-event/', views.searchEvent, name='search-event'),
-    path('register-for-event/<str:pk>/', views.registerForEvent, name='register-for-event'),
+    path('register-event/<str:pk>/', views.registerForEvent, name='register-event'),
 
 ]
 

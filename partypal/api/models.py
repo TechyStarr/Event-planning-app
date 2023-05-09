@@ -17,7 +17,7 @@ class Event(models.Model):
     start_date = models.DateTimeField(default=datetime(2023, 6, 10, 10, 30))
     end_date = models.DateTimeField(default=datetime(2023, 6, 10, 12, 0))
     location = models.CharField(max_length=100)
-    host = models.ForeignKey(User, related_name='events_hosted', default="", null=True, blank=True, on_delete=models.CASCADE)
+    host = models.ForeignKey(User, related_name='events_hosted', default="", null=True, on_delete=models.CASCADE)
     guests = models.ManyToManyField(User, related_name='registered_guests', blank=True, default=[])
     capacity = models.IntegerField(default=0)
     image = models.ImageField(upload_to='event_images/', null=True)
