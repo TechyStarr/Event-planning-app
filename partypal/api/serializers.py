@@ -60,6 +60,31 @@ class SearchEventSerializer(ModelSerializer):
 class registerForEventSerializer(ModelSerializer):
     event_id = serializers.IntegerField()
 
+    def validate_event_id(self, value):
+        try:
+            event = Event.objects.get(pk=value)
+        except Event.DoesNotExist:
+            raise serializers.ValidationError(
+                {"Event": "Event does not exist"}
+            )
+        
+        if event.guests.count() >= event.venue.capacity:
+            raise serializers.ValidationError(
+                {"Capacity": "Event is full"}
+            )
+        
+        if event.start_date < timezone.now():
+            raise serializers.ValidationError(
+                {"Event": "Event has started, you can't register for this event"}
+            )
+        return event
+    
+    def create(self, validated_data):
+        event = validated_data['event_id']
+        user = self.context['request'].user # get the user from the request 
+        event.guests.add(user)
+        return event
+
 
 
 

@@ -9,14 +9,14 @@ urlpatterns = [
 
     
     # ------------ EVENT -------------
-    path('list-event/', views.listEvent, name='list-event'),
-    path('view-event/<str:pk>/', views.viewEvent, name='view-event'),
-    path('create-event/', views.createEvent, name='create-event'),
-    path('update-event/<str:pk>/', views.updateEvent, name='update-event'),
-    path('delete-event/<str:pk>/', views.deleteEvent, name='delete-event'),
+    path('events/', views.listEvent, name='events'),
+    path('event/<str:pk>/', views.viewEvent, name='event'),
+    path('event-create/', views.createEvent, name='event-create'),
+    path('event-update/<str:pk>/', views.updateEvent, name='event-delete'),
+    path('event-delete/<str:pk>/', views.deleteEvent, name='event-delete'),
 
-    path('search-event/', views.searchEvent, name='search-event'),
-    path('register-event/<str:pk>/', views.registerForEvent, name='register-event'),
+    path('event-search/', views.searchEvent, name='event-search'),
+    path('event-register/<str:pk>/', views.registerForEvent, name='event-register'),
 
 ]
 
