@@ -20,8 +20,9 @@ class Event(models.Model):
     host = models.ForeignKey(User, related_name='events_hosted', default="", null=True, blank=True, on_delete=models.CASCADE)
     guests = models.ManyToManyField(User, related_name='registered_guests', blank=True, default=[])
     capacity = models.IntegerField(default=0)
-    image = models.ImageField(upload_to='event_images/', blank=True)
-    venue = models.ForeignKey('Venue', related_name='events', default="", null=True, blank=True, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='event_images/', null=True)
+    venue = models.ForeignKey('Venue', related_name='events', default=1, on_delete=models.CASCADE)
+    custom_venue = models.ForeignKey("Venue", null=True, on_delete=models.CASCADE, related_name='custom_events')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -30,12 +31,13 @@ class Event(models.Model):
     def save(self, *args, **kwargs):
         super(Event, self).save(*args, **kwargs)
         
-        img = Image.open(self.image.path)
-        
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
-            img.thumbnail(output_size)
-            img.save(self.image.path)
+        if self.image:
+            img = Image.open(self.image.path)
+            
+            if img.height > 300 or img.width > 300:
+                output_size = (300, 300)
+                img.thumbnail(output_size)
+                img.save(self.image.path)
     
 
 class Host(models.Model):
@@ -45,8 +47,7 @@ class Host(models.Model):
     events_hosting = models.ManyToManyField(Event, related_name='hosted_events', blank=True, default=[])
     rating = models.DecimalField(max_digits=2, decimal_places=1, default=0.0) # max_digits is the total number of digits allowed, decimal_places is the number of digits allowed after the decimal point
 
-    def __str__(self):
-        return self.name
+    
 
     
 
@@ -58,7 +59,6 @@ class Venue(models.Model):
     contact_email = models.EmailField(max_length=100, default="")
     contact_phone = models.CharField(max_length=100, default="")
     rating = models.DecimalField(max_digits=2, decimal_places=1, default=0.0) # max_digits is the total number of digits allowed, decimal_places is the number of digits allowed after the decimal point
-    event = models.ForeignKey(Event, related_name='venues', default="", blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name

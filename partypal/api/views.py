@@ -62,7 +62,6 @@ def createEvent(request):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors)
-    return Response(serializer.data)
 
 @api_view(['PUT'])
 @authentication_classes([JWTAuthentication]) 
