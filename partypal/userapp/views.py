@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from rest_framework.decorators import api_view
+from django.db.models import Q
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import User
 from .serializer import UserSerializer
@@ -27,59 +28,93 @@ def apiOverview(request):
 
 
 
-# ------------- USER -----------------
+class UserList(APIView):
+    @authentication_classes([JWTAuthentication]) # 
+    @permission_classes([IsAuthenticated])
 
-
-@api_view(['GET'])
-@authentication_classes([JWTAuthentication]) # 
-@permission_classes([IsAuthenticated])
-def userList(request):
-    users = User.objects.all()
-    serializers = UserSerializer(users, many=True)
-    return Response(serializers.data)
-
-
-
-@api_view(['GET'])
-@authentication_classes([JWTAuthentication])
-@permission_classes([IsAuthenticated])
-def viewUser(request, pk):
-    users = User.objects.get(id=pk)
-    serializer  = UserSerializer(users, many=False)
-    return Response(serializer.data)
-
-
-@api_view(['POST'])
-def register(request):
-    users = User.objects.all()
-    if request.method == 'POST':
+    def get(self, request, format=None):
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request, format=None):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors)
-    return Response(serializer.data)
+    
+
+    
+    def get(self,  request):
+        query = request.GET.get('q') # this line of code is used to get the query from the url 
+        if query:
+            queryset = User.objects.filter(
+                Q(name__icontains=query) |
+                Q(location__icontains=query) |
+                Q(description__icontains=query) |
+                Q(start_date__icontains=query) 
+                # Q(upcoming_events__icontains=query) |
+                # Q(past_events__icontains=query) 
+                )# filter the queryset based on the query 
+            
+            serializer = UserSerializer(queryset, many=True) # serialize the queryset 
+            return Response(serializer.data)
+        else:
+            return Response({'Users': 'No user found'})
+        
 
 
 
 
-@api_view(['PUT'])
-@authentication_classes([JWTAuthentication]) 
-@permission_classes([IsAuthenticated])
-def updateUser(request, pk):
-    users = User.objects.get(id=pk)
-    serializers = UserSerializer(instance=users, data=request.data)
-    if serializers.is_valid():
-        serializers.save()
-    return Response(serializers.data)
+class UserDetail(APIView):
+    @authentication_classes([JWTAuthentication]) # 
+    @permission_classes([IsAuthenticated])
+
+    def get_object(self, pk):
+        try:
+            return User.objects.get(pk=pk)
+        except User.DoesNotExist:
+            raise UserSerializer.NotFound({
+                "User": "This user does not exist"
+            })
+        
+    def get(self, request, pk, format=None):
+        user = self.get_object(pk)
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
+    
+    def put(self, request, pk, format=None):
+        user = self.get_object(pk)
+        serializer = UserSerializer(instance=user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)
+    
+    def delete(self,request, pk, format=None):
+        user = self.get_object(pk)
+        user.delete()
+        return Response({
+            "User": "User successfully deleted"
+        })
 
 
-@api_view(['DELETE'])
-@authentication_classes([JWTAuthentication]) 
-@permission_classes([IsAuthenticated])
-def deleteUser(request, pk):
-    user = User.objects.get(id=pk)
-    user.delete()
-    return Response('User successfully deleted')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ------------- USER -----------------
 
 

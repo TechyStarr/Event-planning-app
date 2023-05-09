@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework import filters
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import User, Event, Venue
+from .models import Event, Venue
 from .serializers import EventSerializer
 from django.utils import timezone
 
@@ -75,7 +75,7 @@ class EventDetail(APIView):
             return Event.objects.get(pk=pk)
         except Event.DoesNotExist:
             raise EventSerializer.NotFound({
-                "Event": "This event does not exist"
+                "Event": "This event was not found"
             })
         
     def get(self, request, pk, format=None):
