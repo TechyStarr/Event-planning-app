@@ -30,26 +30,18 @@ class EventSerializer(ModelSerializer):
         super().validate(data) # call the default validate method first to ensure all fields are valid
 
         if data['venue'].id == 2 and not data.get('custom_venue'):
-            raise serializers.ValidationError("custom_venue must be provided if venue is Other")
+            raise serializers.ValidationError({"custom_venue": "Custom must be provided if venue is Other"})
         
-        # interchange custom_venue with venue if venue is Other
-        if data['venue'] == 2:
-            data['venue'] = data['custom_venue']
-
-            # remove custom_venue from data
-            data.pop('custom_venue')
         return data
     
     def create(self, validated_data):
-        venue_data = validated_data.pop('venue')
-        venue = Venue.objects.create(**venue_data) 
+        venue = validated_data.pop('venue')
+
+        if validated_data.get('custom_venue'):
+            venue = Venue.objects.create(**validated_data.pop('custom_venue'))
+    
         event = Event.objects.create(venue=venue, **validated_data)
         return event
-
-
-
-
-            
 
 
 class SearchEventSerializer(ModelSerializer):
