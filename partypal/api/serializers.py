@@ -18,13 +18,13 @@ class EventSerializer(ModelSerializer):
         model = Event
         fields = "__all__" # fields to be serialized
         
-        # def validate(self, data):
-        #     """
-        #     Check that the start is before the stop.
-        #     """
-        #     if data['start_date'] > data['end_date']:
-        #         raise serializers.ValidationError("finish must occur after start")
-        #     return data
+    def validate(self, data):
+        """
+        Check that the start is before the stop.
+        """
+        if data['start_date'] > data['end_date']:
+            raise serializers.ValidationError("finish must occur after start")
+        return data
         
     def validate(self, data):
         super().validate(data) # call the default validate method first to ensure all fields are valid

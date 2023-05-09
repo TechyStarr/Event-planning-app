@@ -10,14 +10,7 @@ urlpatterns = [
     
     # ------------ EVENT -------------
     path('events/', views.EventList.as_view(), name='events'),
-
     path('event/<int:pk>/', views.EventDetail.as_view(), name='event'),
-    path('event-create/', views.createEvent, name='event-create'),
-    path('event-update/<str:pk>/', views.updateEvent, name='event-delete'),
-    path('event-delete/<str:pk>/', views.deleteEvent, name='event-delete'),
-
-    path('event-search/', views.searchEvent, name='event-search'),
-    path('event-register/<str:pk>/', views.registerForEvent, name='event-register'),
 
 ]
 

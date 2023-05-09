@@ -32,6 +32,8 @@ def apiOverview(request):
 # ------------- EVENT -----------------
 
 class EventList(APIView):
+    @authentication_classes([JWTAuthentication]) 
+    @permission_classes([IsAuthenticated])
 
     def get(self, request, format=None): # format=None allows for multiple data types to be returned
         events = Event.objects.all()
@@ -43,10 +45,31 @@ class EventList(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
+        return Response(serializer.errors)
+    
+
+    def get(self,  request):
+        query = request.GET.get('q') # this line of code is used to get the query from the url 
+        if query:
+            queryset = Event.objects.filter(
+                Q(name__icontains=query) |
+                Q(location__icontains=query) |
+                Q(description__icontains=query) |
+                Q(start_date__icontains=query) 
+                # Q(upcoming_events__icontains=query) |
+                # Q(past_events__icontains=query) 
+                )# filter the queryset based on the query 
+            
+            serializer = EventSerializer(queryset, many=True) # serialize the queryset 
+            return Response(serializer.data)
+        else:
+            return Response({'events': 'No event found'})
         
 
 
 class EventDetail(APIView):
+    @authentication_classes([JWTAuthentication]) 
+    @permission_classes([IsAuthenticated])
     def get_event(self, pk):
         try:
             return Event.objects.get(pk=pk)
@@ -76,7 +99,24 @@ class EventDetail(APIView):
         })
 
 
-
+# class SearchEvent(APIView):
+#     @authentication_classes([JWTAuthentication]) 
+#     @permission_classes([IsAuthenticated])
+#     def get(self, request):
+#         query = request.GET.get('q') # this line of code is used to get the query from the url
+#         if query:
+#             queryset = Event.objects.filter(
+#                 Q(name__icontains=query) |
+#                 Q(location__icontains=query) |
+#                 Q(description__icontains=query) |
+#                 Q(start_date__icontains=query) 
+#                 # Q(upcoming_events__icontains=query) |
+#                 # Q(past_events__icontains=query) 
+#                 )# filter the queryset based on the query
+#             serializer = EventSerializer(queryset, many=True) # serialize the queryset
+#             return Response(serializer.data)
+#         else:
+#             return Response({'events': 'No event found'})
 
 
 
@@ -96,49 +136,13 @@ class EventDetail(APIView):
 
 
 
-@api_view(['GET'])
-@authentication_classes([JWTAuthentication]) 
-@permission_classes([IsAuthenticated])
-def viewEvent(request, pk):
-    events = Event.objects.get(id=pk)
-    serializer = EventSerializer(events, many=False)
-    return Response(serializer.data)
-
-
-@api_view(['POST'])
-@authentication_classes([JWTAuthentication]) 
-@permission_classes([IsAuthenticated])
-def createEvent(request):
-    events = Event.objects.all()
-    if request.method == 'POST':
-        serializer = EventSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors)
-    
-
-
-@api_view(['PUT'])
-@authentication_classes([JWTAuthentication]) 
-@permission_classes([IsAuthenticated])
-def updateEvent(request, pk):
-    events = Event.objects.get(id=pk)
-    serializer = EventSerializer(instance=events, data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        
-    return Response(serializer.data)
 
 
 
-@api_view(['DELETE'])
-@authentication_classes([JWTAuthentication]) 
-@permission_classes([IsAuthenticated])
-def deleteEvent(request, pk):
-    event = Event.objects.get(id=pk)
-    event.delete()
-    return Response('Item successfully deleted')
+
+
+
+
 
 
 @api_view(['GET'])
