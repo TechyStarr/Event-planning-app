@@ -20,4 +20,5 @@ urlpatterns = [
     # ------------ USER -------------
     path('users/', views.UserList.as_view(), name='users'),
     path('user/<str:pk>/', views.UserDetail.as_view(), name='user'),
+    path('user-search/', views.SearchUser.as_view(), name='user-search'),
 ]

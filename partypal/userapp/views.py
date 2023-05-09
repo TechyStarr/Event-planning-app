@@ -45,25 +45,6 @@ class UserList(APIView):
         return Response(serializer.errors)
     
 
-    
-    def get(self,  request):
-        query = request.GET.get('q') # this line of code is used to get the query from the url 
-        if query:
-            queryset = User.objects.filter(
-                Q(name__icontains=query) |
-                Q(location__icontains=query) |
-                Q(description__icontains=query) |
-                Q(start_date__icontains=query) 
-                # Q(upcoming_events__icontains=query) |
-                # Q(past_events__icontains=query) 
-                )# filter the queryset based on the query 
-            
-            serializer = UserSerializer(queryset, many=True) # serialize the queryset 
-            return Response(serializer.data)
-        else:
-            return Response({'Users': 'No user found'})
-        
-
 
 
 
@@ -103,6 +84,26 @@ class UserDetail(APIView):
 
 
 
+
+class SearchUser(APIView):
+
+    def get(self,  request):
+        query = request.GET.get('q') # this line of code is used to get the query from the url 
+        if query:
+            queryset = User.objects.filter(
+                Q(name__icontains=query) |
+                Q(location__icontains=query) |
+                Q(description__icontains=query) |
+                Q(start_date__icontains=query) 
+                # Q(upcoming_events__icontains=query) |
+                # Q(past_events__icontains=query) 
+                )# filter the queryset based on the query 
+            
+            serializer = UserSerializer(queryset, many=True) # serialize the queryset 
+            return Response(serializer.data)
+        else:
+            return Response({'Users': 'No user found'})
+        
 
 
 

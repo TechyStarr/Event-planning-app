@@ -11,6 +11,7 @@ urlpatterns = [
     # ------------ EVENT -------------
     path('events/', views.EventList.as_view(), name='events'),
     path('event/<int:pk>/', views.EventDetail.as_view(), name='event'),
+    path('event-search/', views.SearchEvent.as_view(), name='event-search'),
 
 ]
 
