@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework import filters
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Event, Venue
+from .models import User, Event, Venue
 from .serializers import EventSerializer
 from django.utils import timezone
 
@@ -104,6 +104,35 @@ class SearchEvent(APIView):
 
 
 
+class RegisterForEvent(APIView):
+    @authentication_classes([JWTAuthentication])
+    @permission_classes([IsAuthenticated])
+
+    def post(self, request, pk, format=None): # format=None allows for multiple data types to be returned
+        event = Event.objects.get(id=pk) # get the event with the id
+        if event:
+            user = User.objects.get(id=request.user.id) # get the user with the id
+            if user in event.guests.all(): # check if the user is already registered for the event
+                return Response({"error": "You're already registered for this event"})
+            event.guests.add(user) # add the user to the event
+            return Response({"success": "You've successfully registered for this event"})
+        else:
+            return Response({"error": "Event not found"})
+        
+
+
+    
+    # def post(self, request, pk, format=None): # format=None allows for multiple data types to be returned
+    #     event = Event.objects.get(id=pk) #
+
+        
+    #     event.guests.add(request.user)
+    #     return Response({"success": "You've successfully registered for this event"})
+
+
+
+
+
 
 
 
@@ -121,31 +150,6 @@ class SearchEvent(APIView):
 
 
 
-
-
-
-
-
-
-
-@api_view(['GET'])
-def searchEvent(request):
-    query = request.GET.get('q') # this line of code is used to get the query from the url 
-    if query:
-        queryset = Event.objects.filter(
-            Q(name__icontains=query) |
-            Q(location__icontains=query) |
-            Q(description__icontains=query) |
-            Q(date__icontains=query) 
-            # Q(upcoming_events__icontains=query) |
-            # Q(past_events__icontains=query) 
-            )# filter the queryset based on the query 
-        
-        serializer = EventSerializer(queryset, many=True) # serialize the queryset 
-        return Response(serializer.data)
-    else:
-        return Response({'events': 'No event found'})
-    
 
 # @api_view(['GET'])
 # def recentEvent(request):
