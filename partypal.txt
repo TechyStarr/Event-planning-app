@@ -4,6 +4,12 @@ create a new directory that will run on a diff port using the terminal
     run "npx create-react-app frontend" this will create a boilerplate
 
 
+Ticked off
+    CRUD
+    authentication
+    Search function
+    Event Registration
+    Invite function
 
 
 1.Browse events: Users can browse through a list of upcoming events, view event details,

@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
-from .models import User, Event, Venue
+from .models import User, Event, Venue, Host
 from django.utils import timezone
 
 
@@ -90,10 +90,12 @@ class registerForEventSerializer(ModelSerializer):
 
 
 
-# class HostSerializer(ModelSerializer):
-#     class Meta:
-#         model = Host
-#         fields = ('id', 'name', 'email', 'phone', 'event')
+
+
+class HostSerializer(ModelSerializer):
+    class Meta:
+        model = Host
+        fields = "__all__"
 
 
 

@@ -40,12 +40,30 @@ class EventList(APIView):
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
     
+    
     def post(self, request, format=None):
         serializer = EventSerializer(data=request.data)
+        
         if serializer.is_valid():
             serializer.save()
+            user = User.objects.get(id=request.user.id)
+            Event.host.add(user)
+            
             return Response(serializer.data)
         return Response(serializer.errors)
+    
+
+    
+    # def post(self, request, pk, format=None): # format=None allows for multiple data types to be returned
+    #     event = Event.objects.get(id=pk) # get the event with the id
+    #     if event:
+    #         user = User.objects.get(id=request.user.id) # get the user with the id
+    #         if user in event.guests.all(): # check if the user is already registered for the event
+    #             return Response({"error": "You're already registered for this event"})
+    #         event.guests.add(user) # add the user to the event
+    #         return Response({"success": "You've successfully registered for this event"})
+    #     else:
+    #         return Response({"error": "Event not found"})
     
 
 
@@ -121,13 +139,10 @@ class RegisterForEvent(APIView):
         
 
 
-    
-    # def post(self, request, pk, format=None): # format=None allows for multiple data types to be returned
-    #     event = Event.objects.get(id=pk) #
 
-        
-    #     event.guests.add(request.user)
-    #     return Response({"success": "You've successfully registered for this event"})
+
+
+# class InviteGuest(APIView):
 
 
 

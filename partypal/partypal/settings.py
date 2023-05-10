@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'api', #new
     'userapp',
     'rest_framework',
+    # 'rest_framework_docs',
+    # 'drf-yasg',
     'rest_framework_simplejwt.token_blacklist',
     "corsheaders",
 ]

@@ -42,20 +42,19 @@ class Event(models.Model):
 
 class Host(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='hosts', default="Amaino")
-    bio = models.TextField(max_length=100, default="")
+    bio = models.TextField(max_length=100, default="", null=True)
     events_hosted = models.ManyToManyField(Event, related_name='hosts', blank=True, default=[])
     events_hosting = models.ManyToManyField(Event, related_name='hosted_events', blank=True, default=[])
     rating = models.DecimalField(max_digits=2, decimal_places=1, default=0.0) # max_digits is the total number of digits allowed, decimal_places is the number of digits allowed after the decimal point
 
-    
 
-    
+
+
 
 class Venue(models.Model):
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=100)
     capacity = models.IntegerField(default=0)
-    contact_name = models.CharField(max_length=100, default="")
     contact_email = models.EmailField(max_length=100, default="")
     contact_phone = models.CharField(max_length=100, default="")
     rating = models.DecimalField(max_digits=2, decimal_places=1, default=0.0) # max_digits is the total number of digits allowed, decimal_places is the number of digits allowed after the decimal point
