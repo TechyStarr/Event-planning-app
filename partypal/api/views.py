@@ -57,20 +57,6 @@ class EventList(APIView):
 
 
 
-    
-    # def post(self, request, pk, format=None): # format=None allows for multiple data types to be returned
-    #     event = Event.objects.get(id=pk) # get the event with the id
-    #     if event:
-    #         user = User.objects.get(id=request.user.id) # get the user with the id
-    #         if user in event.guests.all(): # check if the user is already registered for the event
-    #             return Response({"error": "You're already registered for this event"})
-    #         event.guests.add(user) # add the user to the event
-    #         return Response({"success": "You've successfully registered for this event"})
-    #     else:
-    #         return Response({"error": "Event not found"})
-    
-
-
 
 class EventDetail(APIView):
     @authentication_classes([JWTAuthentication]) 
@@ -146,7 +132,22 @@ class RegisterForEvent(APIView):
 
 
 
-# class InviteGuest(APIView):
+class GuestInvite(APIView):
+
+    def post(self, request, user_id, event_id):
+        event = Event.objects.get(id=event_id)
+        if event:
+            user = User.objects.get(id=user_id)
+            if user:
+                event.guests.add(user)
+                event.save()
+                return Response({"success": "You've successfully registered for this event"})
+            return Response({"User": "User does not exist"})
+        else:
+            return Response({"error": "Event not found"})
+        
+
+        
 
 
 
@@ -189,13 +190,6 @@ class RegisterForEvent(APIView):
 #     return Response(serializer.data)
 
 
-@api_view(['POST'])
-def registerForEvent(request, pk):
-    event = Event.objects.get(id=pk) #
-
-    
-    event.guests.add(request.user)
-    return Response({"success": "You've successfully registered for this event"})
 
 @api_view(['GET'])
 def unregisterForEvent(request, pk):
