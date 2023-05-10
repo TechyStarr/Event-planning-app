@@ -6,8 +6,8 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework import filters
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import User, Event, Venue
-from .serializers import EventSerializer
+from .models import User, Event, Venue, Host
+from .serializers import EventSerializer, HostSerializer, VenueSerializer
 from django.utils import timezone
 
 
@@ -40,18 +40,22 @@ class EventList(APIView):
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
     
-    
+    # needs to bw fixed
     def post(self, request, format=None):
-        serializer = EventSerializer(data=request.data)
-        
-        if serializer.is_valid():
-            serializer.save()
-            user = User.objects.get(id=request.user.id)
-            Event.host.add(user)
+        event_serializer = EventSerializer(data=request.data)
+        if event_serializer.is_valid():
             
-            return Response(serializer.data)
-        return Response(serializer.errors)
-    
+            user = request.user
+            event_serializer.save(host=user)
+
+            # create and save host object
+            host = Host(user=user)
+            host.save()
+
+            return Response(event_serializer.data)
+        return Response(event_serializer.errors)
+
+
 
     
     # def post(self, request, pk, format=None): # format=None allows for multiple data types to be returned
