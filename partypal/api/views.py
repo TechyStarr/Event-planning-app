@@ -133,6 +133,8 @@ class RegisterForEvent(APIView):
 
 
 class GuestInvite(APIView):
+    @authentication_classes([JWTAuthentication])
+    @permission_classes([IsAuthenticated])
 
     def post(self, request, user_id, event_id):
         event = Event.objects.get(id=event_id)
