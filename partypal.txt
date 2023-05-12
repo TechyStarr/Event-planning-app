@@ -4,7 +4,7 @@ create a new directory that will run on a diff port using the terminal
     run "npx create-react-app frontend" this will create a boilerplate
 
 
-Ticked off
+Completed
     CRUD
     authentication
     Search function
