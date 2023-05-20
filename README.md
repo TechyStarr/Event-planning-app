@@ -1,14 +1,15 @@
-# Event-planning-app
+# PartyPal
 
 Partypal is an event planning app designed to simplify the process of organizing and managing events. It offers a range of features and tools to help users plan, coordinate, and execute successful events, whether it's a small gathering, corporate conference, or a grand celebration.
 
-### Key Features of Partypal:
+### Key Features
 
 __Event Creation__: Users can create new events by providing essential details such as event name, date, time, location, and description. This feature allows users to set a solid foundation for their event planning process.
 
 __Guest Management__: Partypal allows users to manage their guest lists efficiently. Users can send invitations, track RSVPs, manage guest information, and communicate updates to attendees. It simplifies the process of managing guest information and ensures smooth communication with invitees.
 
 __Vendor and Supplier Management__: The app enables users to manage vendors and suppliers associated with their events. Users can store contact details, contracts, and other relevant information, making it easier to collaborate with vendors and ensure seamless coordination.
+
 __Note:__ PartyPal is still under development
 
 <!-- Task and Checklist Management: The app provides tools for creating and managing event-related tasks and checklists. Users can create to-do lists, assign tasks to team members or volunteers, set deadlines, and track progress. This feature helps users stay organized and ensures that all necessary tasks are completed on time.
