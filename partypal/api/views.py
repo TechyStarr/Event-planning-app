@@ -162,10 +162,11 @@ class RemoveGuest(APIView):
             if user:
                 event.guests.remove(user)
                 event.save()
-                event_serializer = EventSerializer(event)
+                serializer = EventSerializer(event)
+                guest_list = serializer.data.get("guests")
                 response_data = {
                 "Message": f"You've removed {user} from this event",
-                "Updated guest_list": event_serializer.data
+                "Updated guest_list": guest_list,
                 }
                 return Response(response_data)
             return Response({"User": "User does not exist"})
@@ -198,7 +199,6 @@ class RetrieveEventGuestList(APIView):
 
 
 
-        
 # test this
 class ViewHost(APIView):
     @authentication_classes([JWTAuthentication])
