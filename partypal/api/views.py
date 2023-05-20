@@ -31,6 +31,7 @@ def apiOverview(request):
 
 # ------------- EVENT -----------------
 
+# tested
 class EventList(APIView):
     @authentication_classes([JWTAuthentication]) 
     @permission_classes([IsAuthenticated])
@@ -57,7 +58,7 @@ class EventList(APIView):
 
 
 
-
+# tested
 class EventDetail(APIView):
     @authentication_classes([JWTAuthentication]) 
     @permission_classes([IsAuthenticated])
@@ -90,6 +91,7 @@ class EventDetail(APIView):
         })
 
 
+# tested
 class SearchEvent(APIView):
     @authentication_classes([JWTAuthentication]) 
     @permission_classes([IsAuthenticated])
@@ -111,7 +113,7 @@ class SearchEvent(APIView):
 
 
 
-
+# tested
 class RegisterForEvent(APIView):
     @authentication_classes([JWTAuthentication])
     @permission_classes([IsAuthenticated])
@@ -131,7 +133,7 @@ class RegisterForEvent(APIView):
 
 
 
-
+# tested
 class GuestInvite(APIView):
     @authentication_classes([JWTAuthentication])
     @permission_classes([IsAuthenticated])
@@ -143,12 +145,13 @@ class GuestInvite(APIView):
             if user:
                 event.guests.add(user)
                 event.save()
-                return Response({"success": "You've successfully registered for this event"})
+                return Response({"success": f"You just invited {user} to this event"})
             return Response({"User": "User does not exist"})
         else:
             return Response({"error": "Event not found"})
 
 
+# tested
 class RemoveGuest(APIView):
     @authentication_classes([JWTAuthentication])
     @permission_classes([IsAuthenticated])
@@ -159,7 +162,7 @@ class RemoveGuest(APIView):
             if user:
                 event.guests.remove(user)
                 event.save()
-                return Response({"success": "You've successfully unregistered for this event"})
+                return Response({"success": f"You've removed {user} from this event"})
             return Response({"User": "User does not exist"})
         else:
             return Response({"error": "Event not found"})
@@ -183,7 +186,7 @@ class RetrieveEventGuestList(APIView):
 
 
         
-
+# test this
 class ViewHost(APIView):
     @authentication_classes([JWTAuthentication])
     @permission_classes([IsAuthenticated])
@@ -196,7 +199,6 @@ class ViewHost(APIView):
             return Response(serializer.data)
         else:
             return Response({"error": "Event not found"})
-
 
 
 
