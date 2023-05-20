@@ -167,7 +167,7 @@ class RemoveGuest(APIView):
 
 
 
-class RetrieveEventGuest(APIView):
+class RetrieveEventGuestList(APIView):
     @authentication_classes([JWTAuthentication])
     @permission_classes([IsAuthenticated])
     def get(self, request, event_id):
