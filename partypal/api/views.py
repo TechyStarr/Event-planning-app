@@ -167,35 +167,35 @@ class RemoveGuest(APIView):
 
 
 
-# class RetrieveEventGuest(APIView):
-#     @authentication_classes([JWTAuthentication])
-#     @permission_classes([IsAuthenticated])
-#     def get(self, request, event_id):
-#         event = Event.objects.get(id=event_id)
-#         if event:
-#             guests = event.guests.all()
-#             if guests:
-
-#             serializer = EventSerializer(guests, many=True)
-#             return Response(serializer.data)
-#         else:
-#             return Response({"error": "Event not found"})
+class RetrieveEventGuest(APIView):
+    @authentication_classes([JWTAuthentication])
+    @permission_classes([IsAuthenticated])
+    def get(self, request, event_id):
+        event = Event.objects.get(id=event_id)
+        if event:
+            guests = event.guests.all()
+            if guests:
+                serializer = EventSerializer(guests, many=True)
+                return Response(serializer.data)
+            return Response({"Guests": "No guests found"})
+        else:
+            return Response({"error": "Event not found"})
 
 
         
 
-# class ViewHost(APIView):
-#     @authentication_classes([JWTAuthentication])
-#     @permission_classes([IsAuthenticated])
+class ViewHost(APIView):
+    @authentication_classes([JWTAuthentication])
+    @permission_classes([IsAuthenticated])
 
-#     def get(self, request, event_id):
-#         event = Event.objects.get(id=event_id)
-#         if event:
-#             host = event.host
-#             serializer = HostSerializer(host)
-#             return Response(serializer.data)
-#         else:
-#             return Response({"error": "Event not found"})
+    def get(self, request, event_id):
+        event = Event.objects.get(id=event_id)
+        if event:
+            host = event.host
+            serializer = HostSerializer(host)
+            return Response(serializer.data)
+        else:
+            return Response({"error": "Event not found"})
 
 
 
