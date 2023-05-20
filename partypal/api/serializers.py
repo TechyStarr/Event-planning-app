@@ -13,6 +13,7 @@ class VenueSerializer(ModelSerializer):
 class EventSerializer(ModelSerializer):
     venue = serializers.PrimaryKeyRelatedField(queryset=Venue.objects.all())
     custom_venue = VenueSerializer(required=False)
+    guests = serializers.StringRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Event

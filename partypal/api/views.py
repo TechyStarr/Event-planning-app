@@ -162,7 +162,12 @@ class RemoveGuest(APIView):
             if user:
                 event.guests.remove(user)
                 event.save()
-                return Response({"success": f"You've removed {user} from this event"})
+                event_serializer = EventSerializer(event)
+                response_data = {
+                "Message": f"You've removed {user} from this event",
+                "Updated guest_list": event_serializer.data
+                }
+                return Response(response_data)
             return Response({"User": "User does not exist"})
         else:
             return Response({"error": "Event not found"})
@@ -170,19 +175,27 @@ class RemoveGuest(APIView):
 
 
 
+
+
+
+# tested
 class RetrieveEventGuestList(APIView):
     @authentication_classes([JWTAuthentication])
     @permission_classes([IsAuthenticated])
     def get(self, request, event_id):
         event = Event.objects.get(id=event_id)
         if event:
-            guests = event.guests.all()
-            if guests:
-                serializer = EventSerializer(guests, many=True)
-                return Response(serializer.data)
-            return Response({"Guests": "No guests found"})
+            serializer = EventSerializer(event)
+            guest_list = serializer.data.get("guests")
+            response_data = {
+                "Message": f"Attached below is the guest list for {event.name}",
+                "Guests": guest_list,
+            }
+            return Response(response_data)
         else:
             return Response({"error": "Event not found"})
+
+
 
 
         
