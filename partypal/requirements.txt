@@ -1,0 +1,4 @@
+-r requirements-dev.txt # install dev requirements for testing  and linting
+
+gunicorn -c gunicorn.py app:app # run the app
+```
