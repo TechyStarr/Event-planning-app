@@ -241,10 +241,10 @@ def recentEvent(request):
     return Response(serializer.data)
 
 # @api_view(['GET'])
-# def upcomingEvent(request):
-#     queryset = Event.objects.all().order_by('date')[:3]
-#     serializer = EventSerializer(queryset, many=True)
-#     return Response(serializer.data)
+def upcomingEvent(request):
+    queryset = Event.objects.all().order_by('date')[:3]
+    serializer = EventSerializer(queryset, many=True)
+    return Response(serializer.data)
 
 # @api_view(['GET'])
 # def pastEvent(request):
