@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from .models import User, Event, Venue, Host
 from .serializers import EventSerializer, HostSerializer, VenueSerializer
 from django.utils import timezone
+from datetime import datetime, timedelta
 
 
 
@@ -215,6 +216,27 @@ class ViewHost(APIView):
 
 
 
+class RecentEvent(APIView):
+    @authentication_classes([JWTAuthentication])
+    @permission_classes([IsAuthenticated])
+
+    def get(self, request):
+        queryset = Event.objects.all().order_by('-date')[:3] # get the last 3 events in the database based on the date they were created
+        serializer = EventSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+class UpcomingEvent(APIView):
+    @authentication_classes([JWTAuthentication])
+    @permission_classes([IsAuthenticated])
+
+    def get(self, request):
+        queryset = Event.objects.all().order_by('date')[:3] # get the first 3 events in the database based on the date they were created
+        if queryset.date > datetime.now():
+            serializer = EventSerializer(queryset, many=True)
+            return Response(serializer.data)
+        elif queryset is None:
+            return Response({"error": "No upcoming event found"})
 
 
 
