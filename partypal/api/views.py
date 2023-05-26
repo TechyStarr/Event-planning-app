@@ -248,40 +248,9 @@ class UpcomingEvent(APIView):
 
 
 
-
-
-# ------------- EVENT -----------------
-
-
-
-
-
-
-@api_view(['GET'])
-def recentEvent(request):
-    queryset = Event.objects.all().order_by('-date')[:3]
-    serializer = EventSerializer(queryset, many=True)
-    return Response(serializer.data)
-
-# @api_view(['GET'])
-def upcomingEvent(request):
-    queryset = Event.objects.all().order_by('date')[:3]
-    serializer = EventSerializer(queryset, many=True)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-def pastEvent(request):
-    queryset = Event.objects.all().order_by('-date')[:3]
-    serializer = EventSerializer(queryset, many=True)
-    return Response(serializer.data)
-
-
-
 @api_view(['GET'])
 def unregisterForEvent(request, pk):
     pass
-
-
 
 
 @api_view(['GET'])
@@ -304,39 +273,3 @@ def cancelInvite(request, pk):
 @api_view(['GET'])
 def viewHost(request, pk):
     pass
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# @api_view(['GET'])
-# def eventByHost(request, pk):
-#     queryset = Event.objects.filter(host=pk)
-#     serializer = EventSerializer(queryset, many=True)
-#     return Response(serializer.data)
-
-# @api_view(['GET'])
-# def eventByGuest(request, pk):
-#     queryset = Event.objects.filter(guest=pk)
-#     serializer = EventSerializer(queryset, many=True)
-#     return Response(serializer.data)

@@ -62,3 +62,19 @@ class Venue(models.Model):
     def __str__(self):
         return self.name
     
+
+
+# class Category(models.Model):
+
+
+
+
+# class Vendor(models.Model):
+#     business_name = models.CharField(max_length=100)
+#     address = models.CharField(max_length=100)
+#     email = models.EmailField(max_length=100, default="")
+#     phone = models.CharField(max_length=100, default="")
+#     rating = models.DecimalField(max_digits=2, decimal_places=1, default=0.0) # max_digits is the total number of digits allowed, decimal_places is the number of digits allowed after the decimal point
+#     events = models.ManyToManyField(Event, related_name='vendors', blank=True, default=[])
+#     services = models.ManyToManyField('Service', related_name='vendors', blank=True, default=[])
+#     products = models.ManyToManyField('Product', related_name='vendors', blank=True, default=[])
